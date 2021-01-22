@@ -1,4 +1,9 @@
 <template>
+  <!-- :is="" 改变动态组件的标签名 is="组件名"  -->
+  <!--
+      该组件为动态组件，router-link或a
+      linkProps 动态去添加组件的属性
+  -->
   <component :is="type" v-bind="linkProps(to)">
     <slot />
   </component>

@@ -3,52 +3,35 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
-// create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000 // request timeout
+  baseURL: process.env.VUE_APP_BASE_API,
+  timeout: 5000
 })
 
-// request interceptor
 service.interceptors.request.use(
+  // 发送请求前回调
   config => {
-    // do something before request is sent
-
+    // store中存在token，将token添加到头部
     if (store.getters.token) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = `Bearer ${getToken()}`
     }
     return config
   },
   error => {
-    // do something with request error
+    // 请求错误前拦截
+    debugger
     console.log(error) // for debug
     return Promise.reject(error)
   }
 )
 
-// response interceptor
 service.interceptors.response.use(
-  /**
-   * If you want to get http information such as headers or status
-   * Please return  response => response
-  */
-
-  /**
-   * Determine the request status by custom code
-   * Here is just an example
-   * You can also judge the status by HTTP Status Code
-   */
   response => {
     const res = response.data
-
-    // if the custom code is not 20000, it is judged as an error.
-    if (res.code !== 20000) {
+    if (res.code !== 0) {
+      const errMsg = res.msg || '请求失败'
       Message({
-        message: res.message || 'Error',
+        message: errMsg,
         type: 'error',
         duration: 5 * 1000
       })
@@ -66,15 +49,16 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(new Error(res.message || 'Error'))
+      return Promise.reject(new Error(errMsg))
     } else {
       return res
     }
   },
   error => {
-    console.log('err' + error) // for debug
+    console.log({ error })
+    const { msg } = error.response.data
     Message({
-      message: error.message,
+      message: msg || '请求失败',
       type: 'error',
       duration: 5 * 1000
     })

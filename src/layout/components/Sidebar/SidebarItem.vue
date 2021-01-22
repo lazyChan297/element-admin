@@ -1,5 +1,6 @@
 <template>
   <div v-if="!item.hidden">
+    <!-- 满足只有一个子路由且 子路由无嵌套or子路由嵌套路由不显示 -->
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
@@ -7,11 +8,12 @@
         </el-menu-item>
       </app-link>
     </template>
-
+    <!-- 可点击下拉的菜单 -->
     <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
+      <!-- sidebar-item item isNest -->
       <sidebar-item
         v-for="child in item.children"
         :key="child.path"
@@ -51,8 +53,6 @@ export default {
     }
   },
   data() {
-    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-    // TODO: refactor with render function
     this.onlyOneChild = null
     return {}
   },
@@ -67,7 +67,7 @@ export default {
           return true
         }
       })
-
+      console.log('showingChildren', showingChildren)
       // When there is only one child router, the child router is displayed by default
       if (showingChildren.length === 1) {
         return true
