@@ -4,7 +4,7 @@
       <el-input
         v-model="listQuery.title"
         placeholder="书名"
-        style="width:200px"
+        style="width:200px;margin-left:10px"
         class="filter-item"
         clearable
         @keyup.enter.native="handleFilter"
@@ -14,7 +14,7 @@
       <el-input
         v-model="listQuery.author"
         placeholder="作者"
-        style="width:200px"
+        style="width:200px;margin-left:10px"
         class="filter-item"
         clearable
         @keyup.enter.native="handleFilter"
@@ -26,6 +26,7 @@
         placeholder="分类"
         clearable
         class="filter-item"
+        style="margin-left:10px"
         @change="handleFilter"
       >
         <el-option

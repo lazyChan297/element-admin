@@ -47,7 +47,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   }
@@ -60,13 +60,14 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/book/create',
     meta: {
-      title: '读书管理',
+      title: '图书管理',
       icon: 'documentation',
       roles: ['admin']
     },
     children: [
       {
         path: '/book/create',
+        name: 'bookCreate',
         component: () => import('@/views/book/create'),
         meta: {
           title: '上传图书',
@@ -78,6 +79,7 @@ export const asyncRoutes = [
       },
       {
         path: '/book/edit/:fileName',
+        name: 'bookEdit',
         component: () => import('@/views/book/edit'),
         hidden: true,
         meta: {
@@ -88,6 +90,7 @@ export const asyncRoutes = [
       },
       {
         path: '/book/list',
+        name: 'bookList',
         component: () => import('@/views/book/list'),
         meta: {
           title: '图书列表',

@@ -5,7 +5,12 @@
     :rules="rules"
   >
     <sticky :class="'sub-navbar'">
-      <el-botton v-if="!isEdit" @click="showGuide">显示帮助</el-botton>
+      <el-button
+        v-if="!isEdit"
+        @click="showGuide"
+      >
+        显示帮助
+      </el-button>
       <el-button
         v-loading="loading"
         type="success"
