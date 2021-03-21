@@ -21,21 +21,6 @@
         @clear="handleFilter"
         @blur="handleFilter"
       />
-      <el-select
-        v-model="listQuery.category"
-        placeholder="分类"
-        clearable
-        class="filter-item"
-        style="margin-left:10px"
-        @change="handleFilter"
-      >
-        <el-option
-          v-for="item in categoryList"
-          :key="item.value"
-          :label="item.label + '(' + item.num + ')'"
-          :value="item.label"
-        />
-      </el-select>
       <el-button
         v-waves
         class="filter-item"
@@ -71,6 +56,7 @@
       :data="list"
       border
       fit
+      empty-text="暂无图书"
       highlight-current-row
       style="width: 100%"
       :default-sort="defaultSort"
@@ -107,12 +93,7 @@
         width="150"
         align="center"
       />
-      <el-table-column
-        label="分类"
-        prop="categoryText"
-        width="100"
-        align="center"
-      />
+
       <el-table-column
         label="语言"
         prop="language"
@@ -121,6 +102,7 @@
       <el-table-column
         v-if="showCover"
         label="封面"
+        width="150"
         align="center"
       >
         <template slot-scope="{row: {cover}}">
@@ -246,11 +228,9 @@
             this.parseQuery()
         },
         mounted() {
-            this.getCategoryList()
             this.getList()
         },
         beforeRouteUpdate(to, from, next) {
-            console.log(to, from)
             if (to.path === from.path) {
                 const newQuery = Object.assign({}, to.query)
                 const oldQuery = Object.assign({}, from.query)

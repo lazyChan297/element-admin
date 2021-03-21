@@ -18,7 +18,23 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/user/logout',
+    url: '/user/info',
     method: 'post'
+  })
+}
+
+export function loginMock(data) {
+  return request({
+    url: '/mock/vue-element-admin/article/list',
+    method: 'get',
+    data
+  })
+}
+
+export function getMenus(role) {
+  return request({
+    url: '/mock/getMenus',
+    method: 'get',
+    params: { role }
   })
 }

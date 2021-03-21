@@ -52,6 +52,10 @@ import { getToken } from '@/utils/auth'
         },
         methods: {
             boforeUpload(file) {
+                const isLimit = file.size / 1024 / 1024 > 3
+                if (isLimit) {
+                    return false
+                }
                 this.$emit('boforeUpload', file)
             },
             onSuccess(response, file) {
@@ -61,7 +65,6 @@ import { getToken } from '@/utils/auth'
                         message: msg,
                         type: 'success'
                     })
-                    console.log('onSuccess', data)
                     this.$emit('onSuccess', data)
                 } else {
                     this.$message({
@@ -72,7 +75,6 @@ import { getToken } from '@/utils/auth'
                 }
             },
             onError(err) {
-                console.log({ err })
                 const errMsg = (err.message && JSON.parse(err.message))
                 this.$message({
                     message: (errMsg && errMsg.msg && `上传失败，失败原因：${errMsg.msg}`) || '上传失败',
@@ -80,12 +82,21 @@ import { getToken } from '@/utils/auth'
                 })
                 this.$emit('onError', err)
             },
-            onRemove() {
-                this.$message({
-                    message: '电子书删除成功',
-                    type: 'success'
-                })
-                this.$emit('onRemove')
+            onRemove(file) {
+                // 文件超出大小，限制上传
+                if (file.status === 'ready') {
+                    this.$message({
+                        message: '上传图书不能大于2M',
+                        type: 'warning'
+                    })
+                    // this.$emit('onRemove')
+                } else {
+                    this.$message({
+                        message: '电子书删除成功',
+                        type: 'success'
+                    })
+                    this.$emit('onRemove')
+                }
             },
             onExceed() {
                 this.$message({

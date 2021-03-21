@@ -6,14 +6,7 @@
   >
     <sticky :class="'sub-navbar'">
       <el-button
-        v-if="!isEdit"
-        @click="showGuide"
-      >
-        显示帮助
-      </el-button>
-      <el-button
         v-loading="loading"
-        type="success"
         @click="submitForm"
       >
         {{ isEdit ? '编辑图书' : '新增图书' }}
@@ -21,7 +14,6 @@
     </sticky>
     <div class="detail-container">
       <el-row>
-        <Warning />
         <el-col :span="24">
           <e-book-upload
             :file-list="fileList"
@@ -141,7 +133,6 @@
 </template>
 <script>
     import Sticky from '../../../components/Sticky/index'
-    import Warning from './Warning'
     import EBookUpload from '@/components/EbookUpload'
     import MDinput from '@/components/MDinput'
     import { createBook, getBook, updateBook } from '../../../api/book'
@@ -154,7 +145,6 @@
     export default {
         components: {
             Sticky,
-            Warning,
             EBookUpload,
             MDinput
         },
@@ -240,7 +230,6 @@
             },
             // 点击目录跳转到指定页面
             onContentsClick(data) {
-                console.log(data.text)
                 if (data.text) {
                     window.open(data.text)
                 }
@@ -261,7 +250,6 @@
                     this.$refs['postForm'].validate((valid, fields) => {
                         if (valid) {
                             const book = Object.assign({}, this.postForm)
-                            console.log(book)
                             delete book.contentsTree
                             if (!this.isEdit) {
                                 createBook(book).then((response) => {

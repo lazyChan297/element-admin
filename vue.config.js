@@ -14,6 +14,7 @@ const name = defaultSettings.title || 'vue Element Admin' // page title
 // You can change the port by the following method:
 // port = 9527 npm run dev OR npm run dev --port = 9527
 const port = process.env.port || process.env.npm_config_port || 9527 // dev port
+console.log(port)
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -29,7 +30,19 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // before: require('./mock/mock-server.js'),
+    proxy: {
+      // change xxx-api/login => mock/login
+      // detail: https://cli.vuejs.org/config/#devserver-proxy
+      '/mock': {
+        target: 'http://localhost:9001',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/mock': '/'
+        }
+      }
+    },
+    // after: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -73,7 +86,17 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-
+    config.module.rule('md')
+      .test(/\.md/)
+      .use('vue-loader')
+      .loader('vue-loader')
+      .end()
+      .use('vue-markdown-loader')
+      .loader('vue-markdown-loader/lib/markdown-compiler')
+      .options({
+        raw: true
+      })
+      .end()
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {

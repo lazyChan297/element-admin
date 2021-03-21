@@ -47,61 +47,29 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
+        meta: { title: '首页', affix: true }
       }
     ]
   }
+  // {
+  //   path: '/system',
+  //   name: 'System',
+  //   component: Layout,
+  //   redirect: '/system/menu',
+  //   meta: {title: '系统管理', roles: ['admin']},
+  //   children: [
+  //     {
+  //       path: '/menu',
+  //       name: 'Menu',
+  //       component: () => import('@/views/system/role/index'),
+  //       meta: {title: '菜单管理', roles: ['admin']}
+  //     }
+  //   ]
+  // }
 ]
 
 // asyncRoutes组件根据权限校验动态添加到路由
-export const asyncRoutes = [
-  {
-    path: '/book',
-    component: Layout,
-    redirect: '/book/create',
-    meta: {
-      title: '图书管理',
-      icon: 'documentation',
-      roles: ['admin']
-    },
-    children: [
-      {
-        path: '/book/create',
-        name: 'bookCreate',
-        component: () => import('@/views/book/create'),
-        meta: {
-          title: '上传图书',
-          icon: 'list',
-          roles: [
-            'admin'
-          ]
-        }
-      },
-      {
-        path: '/book/edit/:fileName',
-        name: 'bookEdit',
-        component: () => import('@/views/book/edit'),
-        hidden: true,
-        meta: {
-          title: '编辑图书',
-          icon: 'edit',
-          activeMenu: '/book/list'
-        }
-      },
-      {
-        path: '/book/list',
-        name: 'bookList',
-        component: () => import('@/views/book/list'),
-        meta: {
-          title: '图书列表',
-          icon: 'list'
-        }
-      }
-    ]
-  },
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-]
+export const asyncRoutes = []
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support

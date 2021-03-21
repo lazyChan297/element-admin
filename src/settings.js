@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'ebook-reader',
+  title: '电子书上传平台',
 
   /**
    * @type {boolean} true | false

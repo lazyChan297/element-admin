@@ -1,4 +1,10 @@
-import { asyncRoutes, constantRoutes } from '@/router'
+import { constantRoutes } from '@/router'
+import axios from 'axios'
+import Layout from '@/layout/index'
+const mockService = axios.create({
+  baseURL: '',
+  timeout: 5000
+})
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -49,16 +55,40 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }, roles) {
     return new Promise(resolve => {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
+      mockService({
+        url: '/mock/getMenus',
+        method: 'GET',
+        params: { role: roles }
+      }).then((res) => {
+        const accessedRoutes = filterAsyncRouter(res.data, true)
+        accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+        commit('SET_ROUTES', accessedRoutes)
+        resolve(accessedRoutes)
+      })
     })
   }
+}
+// 将后端传回来的字符串数组转换为对象数组 addRoutes
+const filterAsyncRouter = (routers, isRewrite = false) => { // 遍历后台传来的路由字符串，转换为组件对象
+  return routers.filter(router => {
+    if (router.component) {
+      if (router.component === 'Layout') { // Layout组件特殊处理
+        router.component = Layout
+      } else if (router.component === 'ParentView') {
+        // router.component = ParentView
+      } else {
+        const component = router.component
+        router.component = loadView(component)
+      }
+    }
+    if (router.children && router.children.length) {
+      router.children = filterAsyncRouter(router.children, router, isRewrite)
+    }
+    return true
+  })
+}
+const loadView = (view) => {
+  return (resolve) => require([`@/views/${view}`], resolve)
 }
 
 export default {

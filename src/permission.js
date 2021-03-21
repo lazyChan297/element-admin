@@ -14,12 +14,11 @@ const whiteList = ['/login', '/auth-redirect'] // 配置白名单页面
 router.beforeEach(async(to, from, next) => {
   // 显示路由进度条
   NProgress.start()
-
   // 设置页面标题
   document.title = getPageTitle(to.meta.title)
-
-  // 判Token是否存在
+  // 判断是否登陆
   const hasToken = getToken()
+  // 已登陆
   if (hasToken) {
     // 已登陆，前往login页重定向到/
     if (to.path === '/login') {
@@ -43,7 +42,6 @@ router.beforeEach(async(to, from, next) => {
           // 前往路由， replace替换为true防止用户点击后退回到登陆页
           next({ ...to, replace: true })
         } catch (error) {
-          console.log(error)
           await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
           next(`/login?redirect=${to.path}`)
