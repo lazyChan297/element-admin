@@ -1,20 +1,12 @@
 <template>
   <div class="dashboard-container">
-    <div class="markdown-body" style="padding-left:20px;">
-      <markdown />
-    </div>
-
+    <img src="../../assets/gngs.png" alt="" style="width: 400px;margin: 20px 20px;">
   </div>
 </template>
 
 <script>
-import markdown from '@/views/dashboard/index.md'
-import 'highlight.js/styles/github.css'
-import 'github-markdown-css'
-
 export default {
   name: 'Dashboard',
-  components: { markdown },
   data() {
     return {
 
