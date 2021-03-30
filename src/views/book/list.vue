@@ -193,9 +193,9 @@
   </div>
 </template>
 <script>
-    import Pagination from '../../components/Pagination/index'
+    import Pagination from '@/components/Pagination/index'
     import waves from '../../directive/waves/waves'
-    import { getCategory, listBook, deleteBook } from '../../api/book'
+    import { getCategory, listBook, deleteBook } from '@/api/book'
     import { parseTime } from '@/utils'
     export default {
         components: {

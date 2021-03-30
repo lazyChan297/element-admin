@@ -1,7 +1,7 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+// import Vue from 'vue'
+// import Router from 'vue-router'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
 /* Layout */
 import Layout from '@/layout'
@@ -71,7 +71,7 @@ export const constantRoutes = [
 // asyncRoutes组件根据权限校验动态添加到路由
 export const asyncRoutes = []
 
-const createRouter = () => new Router({
+const createRouter = () => new VueRouter({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
